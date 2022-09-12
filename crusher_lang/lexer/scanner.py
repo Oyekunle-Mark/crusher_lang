@@ -20,13 +20,13 @@ class Scanner:
         """
 
         with open(self.file_name) as file:
-            self.raw_text = file.read
+            self.raw_text = file.read()
 
     def scan(self):
         if self.file_name is None and self.raw_text is None:
             return  # TODO: handle this weird case
 
-        self.__load_file
+        self.__load_file()
 
         while not self.__at_end_of_file:
             self.start = self.current
