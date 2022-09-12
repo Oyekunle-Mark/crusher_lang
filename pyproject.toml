@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "crusher-lang"
+version = "0.1.0"
+description = "Tree-walk interpreter for the Crusher programming language"
+authors = ["Oye Oloyede <oyekunlemac@gmail.com>"]
+readme = "README.md"
+packages = [{include = "crusher_lang"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
