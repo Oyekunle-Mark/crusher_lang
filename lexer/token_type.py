@@ -2,7 +2,7 @@ from enum import Enum
 
 
 class TokenType(Enum):
-    """This enum contains the Crush token types
+    """This enum contains the Crusher token types
     """
 
     # single character tokens
