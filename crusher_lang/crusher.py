@@ -10,6 +10,8 @@ def execute(tokens):
 
 
 def run_file(file_name):
+    """Run a crusher source file"""
+
     scanner = Scanner(file_name=file_name)
     tokens = scanner.scan()
 
@@ -17,6 +19,8 @@ def run_file(file_name):
 
 
 def run_repl():
+    """Starts the crusher REPL"""
+
     print("\nWelcome to Crusher Lang. \nVersion 0.0.1 - Written by Oye Oloyede\n")
 
     while True:
