@@ -9,7 +9,6 @@ packages = [{include = "crusher_lang"}]
 [tool.poetry.dependencies]
 python = "^3.9"
 black = "^22.8.0"
-mypy = "^0.971"
 
 
 [build-system]
