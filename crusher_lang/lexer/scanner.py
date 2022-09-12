@@ -2,6 +2,10 @@ from .token import Token
 from .token_type import TokenType
 
 
+class CrusherException(Exception):
+    pass
+
+
 class Scanner:
     """Scans a source file and returns the tokens"""
 
@@ -23,10 +27,8 @@ class Scanner:
             self.raw_text = file.read()
 
     def scan(self):
-        if self.file_name is None and self.raw_text is None:
-            return  # TODO: handle this weird case
-
-        self.__load_file()
+        if self.file_name is not None:
+            self.__load_file()
 
         while not self.__at_end_of_file:
             self.start = self.current
@@ -37,6 +39,7 @@ class Scanner:
     def __scan_line(self):
         currentChar = self.__advance_char()
 
+        # FIXME: A match statement would improve these mountain of madness
         if currentChar == "(":
             self.__add_token(TokenType.LEFT_PAREN)
         elif currentChar == ")":
@@ -81,14 +84,30 @@ class Scanner:
                 TokenType.LESS_EQUAL if self.__match_char("=") else TokenType.LESS
             )
             self.__add_token(token_type)
+        elif currentChar == '"':
+            self.__process_string()
         elif currentChar == ";":
             self.__add_token(TokenType.SEMICOLON)
         elif currentChar in [" ", "\r", "\t"]:
             pass
         elif currentChar == "\n":
             self.line += 1
+        elif currentChar == "\0":
+            self.__add_token(TokenType.EOF)
         else:
             pass  # TODO:  raise exception here
+
+    def __process_string(self):
+        while self.__current_char != '"' and not self.__at_end_of_file:
+            self.__advance_char()
+
+        if self.__at_end_of_file:
+            raise CrusherException("Unterminated string.")
+
+        self.__advance_char()
+
+        literal = self.raw_text[self.start : self.current + 1]
+        self.__add_token(token_type=TokenType.STRING, literal=literal)
 
     @property
     def __current_char(self):
