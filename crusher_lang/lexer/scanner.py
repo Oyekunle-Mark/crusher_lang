@@ -5,15 +5,14 @@ from lexer.token_type import TokenType
 class Scanner:
     """Scans a source file and returns the tokens"""
 
-    def __init__(self, file_name):
+    def __init__(self, file_name=None, raw_text=None):
         self.file_name = file_name
-        self.raw_text = ""
+        self.raw_text = raw_text
         self.start = 0
         self.current = 0
         self.line = 0
         self.tokens = []
         self.current_token_index = 0
-        self.input_scanned = False
 
     def __load_file(self):
         """Loads the source file and writes the entire file content
@@ -24,13 +23,15 @@ class Scanner:
             self.raw_text = file.read
 
     def scan(self):
+        if self.file_name is None and self.raw_text is None:
+            return  # TODO: handle this weird case
+
         self.__load_file
 
         while not self.__at_end_of_file:
             self.start = self.current
             self.__scan_line()
 
-        self.input_scanned = True
         return self.tokens
 
     def __scan_line(self):
