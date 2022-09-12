@@ -25,6 +25,7 @@ class Scanner:
 
         with open(self.file_name) as file:
             self.raw_text = file.read()
+            self.raw_text += "\0"
 
     def scan(self):
         if self.file_name is not None:
@@ -102,7 +103,7 @@ class Scanner:
             self.__advance_char()
 
         if self.__at_end_of_file:
-            raise CrusherException("Unterminated string.")
+            raise CrusherException(f"Unterminated string on line {self.line}")
 
         self.__advance_char()
 

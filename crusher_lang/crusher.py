@@ -1,5 +1,6 @@
 import sys
 
+from lexer.scanner import CrusherException
 from lexer.scanner import Scanner
 
 
@@ -32,12 +33,16 @@ def run_repl():
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == 1:
-        run_repl()
-    elif len(sys.argv) == 2:
-        run_file(sys.argv[1])
-    else:
-        print("Error!!!")
-        print("Usage: python crusher.py [some_file.crush]")
+    try:
+        if len(sys.argv) == 1:
+            run_repl()
+        elif len(sys.argv) == 2:
+            run_file(sys.argv[1])
+        else:
+            print("Error!!!")
+            print("Usage: python crusher.py [some_file.crush]")
 
+            sys.exit(64)
+    except CrusherException as e:
+        print("Error: " + str(e))
         sys.exit(64)
