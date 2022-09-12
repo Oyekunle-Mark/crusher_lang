@@ -1,0 +1,11 @@
+= + - * / {
+    , ;; < < + (()) == != !
+}
+"Whatever ends this string"
+
+fn(a, b, c) {
+    let x = 1;
+    let y = c;
+
+    return x * y + b and !a;
+}
