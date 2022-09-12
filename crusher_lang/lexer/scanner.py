@@ -6,6 +6,23 @@ class CrusherException(Exception):
     pass
 
 
+KEYWORDS_MAPPING = {
+    "let": TokenType.LET,
+    "and": TokenType.AND,
+    "or": TokenType.OR,
+    "if": TokenType.IF,
+    "else": TokenType.ELSE,
+    "null": TokenType.NULL,
+    "true": TokenType.TRUE,
+    "false": TokenType.FALSE,
+    "fn": TokenType.FN,
+    "return": TokenType.RETURN,
+    "while": TokenType.WHILE,
+    "for": TokenType.FOR,
+    "print": TokenType.PRINT,
+}
+
+
 class Scanner:
     """Scans a source file and returns the tokens"""
 
@@ -96,7 +113,12 @@ class Scanner:
         elif currentChar == "\0":
             self.__add_token(TokenType.EOF)
         else:
-            pass  # TODO:  raise exception here
+            if self.__is_digit(currentChar):
+                self.__process_number()
+            elif self.__is_alpha_numeric(currentChar):
+                self.__process_identifier()
+            else:
+                raise CrusherException(f"Invalid character on line {self.line}")
 
     def __process_string(self):
         while self.__current_char != '"' and not self.__at_end_of_file:
@@ -107,8 +129,33 @@ class Scanner:
 
         self.__advance_char()
 
-        literal = self.raw_text[self.start : self.current + 1]
+        literal = self.raw_text[self.start : self.current]
         self.__add_token(token_type=TokenType.STRING, literal=literal)
+
+    def __process_number(self):
+        while self.__is_digit(self.__current_char):
+            self.__advance_char()
+
+        if self.__current_char == "." and self.__is_digit(self.__peek_ahead()):
+            self.__advance_char()
+
+            while self.__is_digit(self.__current_char):
+                self.__advance_char()
+
+        literal = float(self.raw_text[self.start : self.current])
+        self.__add_token(TokenType.NUMBER, literal=literal)
+
+    def __process_identifier(self):
+        while self.__is_alpha_numeric(self.__current_char):
+            self.__advance_char()
+
+        lexeme = self.raw_text[self.start : self.current]
+        token_type = TokenType.IDENTIFIER
+
+        if lexeme in KEYWORDS_MAPPING:
+            token_type = KEYWORDS_MAPPING[lexeme]
+
+        self.__add_token(token_type=token_type)
 
     @property
     def __current_char(self):
@@ -117,7 +164,7 @@ class Scanner:
 
         return self.raw_text[self.current]
 
-    def __peek_char(self):
+    def __peek_ahead(self):
         if self.__at_end_of_file:
             return "\0"
 
@@ -144,7 +191,7 @@ class Scanner:
         return self.current >= len(self.raw_text)
 
     def __add_token(self, token_type, literal=None):
-        lexeme = self.raw_text[self.start : self.current + 1]
+        lexeme = self.raw_text[self.start : self.current]
         self.tokens.append(
             Token(
                 token_type=token_type,
@@ -154,3 +201,16 @@ class Scanner:
                 column=self.current,
             )
         )
+
+    def __is_digit(self, char):
+        return char >= "0" and char <= "9"
+
+    def __is_alpha(self, char):
+        return (
+            (char >= "a" and char <= "z")
+            or (char >= "A" and char <= "Z")
+            or char == "_"
+        )
+
+    def __is_alpha_numeric(self, char):
+        return self.__is_alpha(char) or self.__is_digit(char)

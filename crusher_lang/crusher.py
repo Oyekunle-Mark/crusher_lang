@@ -26,23 +26,25 @@ def run_repl():
             print("\nQuitting... \nGoodbye. Thank you for using Crusher Lang")
             sys.exit(0)
 
-        scanner = Scanner(raw_text=user_input)
-        tokens = scanner.scan()
+        try:
+            scanner = Scanner(raw_text=user_input)
+            tokens = scanner.scan()
 
-        execute(tokens)
+            execute(tokens)
+        except CrusherException as e:
+            print("Error: " + str(e))
 
 
 if __name__ == "__main__":
-    try:
-        if len(sys.argv) == 1:
-            run_repl()
-        elif len(sys.argv) == 2:
+    if len(sys.argv) == 1:
+        run_repl()
+    elif len(sys.argv) == 2:
+        try:
             run_file(sys.argv[1])
-        else:
-            print("Error!!!")
-            print("Usage: python crusher.py [some_file.crush]")
-
-            sys.exit(64)
-    except CrusherException as e:
-        print("Error: " + str(e))
-        sys.exit(64)
+        except CrusherException as e:
+            print("Error: " + str(e))
+            sys.exit(1)
+    else:
+        print("Error!!!")
+        print("Usage: python crusher.py [some_file.crush]")
+        sys.exit(1)
