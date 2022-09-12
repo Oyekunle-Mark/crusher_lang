@@ -1,6 +1,6 @@
 import sys
 
-from crusher_lang.lexer.scanner import Scanner
+from lexer.scanner import Scanner
 
 
 def execute(tokens):
@@ -16,13 +16,16 @@ def run_file(file_name):
 
 
 def run_repl():
-    while True:
-        input = input("> ")
+    print("\nWelcome to Crusher Lang. \nVersion 0.0.1 - Written by Oye Oloyede\n")
 
-        if input == "exit":
+    while True:
+        user_input = input("> ")
+
+        if user_input == "exit":
+            print("\nQuitting... \nGoodbye. Thank you for using Crusher Lang")
             sys.exit(0)
 
-        scanner = Scanner(raw_text=input)
+        scanner = Scanner(raw_text=user_input)
         tokens = scanner.scan()
 
         execute(tokens)
@@ -35,6 +38,6 @@ if __name__ == "__main__":
         run_file(sys.argv[1])
     else:
         print("Error!!!")
-        print("Usage: ./crusher.py [some_file.crush]")
+        print("Usage: python crusher.py [some_file.crush]")
 
         sys.exit(64)

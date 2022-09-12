@@ -2,7 +2,7 @@ from typing import NamedTuple
 from typing import Optional
 from typing import Union
 
-from lexer.token_type import TokenType
+from .token_type import TokenType
 
 
 class Token(NamedTuple):

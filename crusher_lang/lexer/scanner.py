@@ -1,5 +1,5 @@
-from lexer.token import Token
-from lexer.token_type import TokenType
+from .token import Token
+from .token_type import TokenType
 
 
 class Scanner:
@@ -10,7 +10,7 @@ class Scanner:
         self.raw_text = raw_text
         self.start = 0
         self.current = 0
-        self.line = 0
+        self.line = 1
         self.tokens = []
         self.current_token_index = 0
 
@@ -53,8 +53,10 @@ class Scanner:
             self.__add_token(TokenType.PLUS)
         elif currentChar == "/":
             if self.__match_char("/"):
-                while self.__peek_char() != "\n" and not self.__at_end_of_file:
+                while self.__current_char != "\n" and not self.__at_end_of_file:
                     self.__advance_char()
+
+                return
 
             self.__add_token(TokenType.SLASH)
         elif currentChar == "*":
@@ -86,10 +88,13 @@ class Scanner:
         elif currentChar == "\n":
             self.line += 1
         else:
-            pass  # raise exception here
+            pass  # TODO:  raise exception here
 
     @property
     def __current_char(self):
+        if self.__at_end_of_file:
+            return "\0"
+
         return self.raw_text[self.current]
 
     def __peek_char(self):
@@ -116,10 +121,10 @@ class Scanner:
 
     @property
     def __at_end_of_file(self):
-        return self.input_scanned and self.current == len(self.raw_text)
+        return self.current >= len(self.raw_text)
 
     def __add_token(self, token_type, literal=None):
-        lexeme = self.raw_text[self.start : self.self.current + 1]
+        lexeme = self.raw_text[self.start : self.current + 1]
         self.tokens.append(
             Token(
                 token_type=token_type,
