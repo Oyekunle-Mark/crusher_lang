@@ -3,6 +3,8 @@ from .token_type import TokenType
 
 
 class CrusherException(Exception):
+    """The Crusher Exception"""
+
     pass
 
 
@@ -45,6 +47,9 @@ class Scanner:
             self.raw_text += "\0"
 
     def scan(self):
+        """Scans the source code or using the user input and returns
+        a lit of tokens"""
+
         if self.file_name is not None:
             self.__load_file()
 
