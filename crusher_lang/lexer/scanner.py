@@ -2,7 +2,7 @@ from lexer.token import Token
 from lexer.token_type import TokenType
 
 
-class Tokenizer:
+class Scanner:
     """Scans a source file and returns the tokens"""
 
     def __init__(self, file_name):
