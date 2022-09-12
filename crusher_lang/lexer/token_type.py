@@ -2,8 +2,7 @@ from enum import Enum
 
 
 class TokenType(Enum):
-    """This enum contains the Crusher token types
-    """
+    """This enum contains the Crusher token types"""
 
     # single character tokens
     LEFT_PAREN = 0
@@ -45,7 +44,7 @@ class TokenType(Enum):
     RETURN = 30
     WHILE = 31
     FOR = 32
-    PRINT = 33 # technically isn't a keyword, but since I might not be adding a standard library, I'm hacking print in.
+    PRINT = 33  # technically isn't a keyword, but since I might not be adding a standard library, I'm hacking print in.
 
     # The ubiquitous, yet discreet end-of-line
     EOF = 44

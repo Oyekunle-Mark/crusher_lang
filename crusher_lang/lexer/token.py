@@ -6,8 +6,7 @@ from lexer.token_type import TokenType
 
 
 class Token(NamedTuple):
-    """The Crusher token
-    """
+    """The Crusher token"""
 
     token_type: TokenType
     lexeme: str
