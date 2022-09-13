@@ -49,6 +49,9 @@ class Assignment(Expression):
     def accept(self, visitor):
         return visitor.visit_assignment(self)
 
+    def __str__(self):
+        return f"{self.identifier.lexeme} = {self.value}"
+
 
 class Binary(Expression):
     def __init__(self, left, token, right):
@@ -59,6 +62,9 @@ class Binary(Expression):
     def accept(self, visitor):
         return visitor.visit_binary(self)
 
+    def __str__(self):
+        return f"({self.left} {self.token.lexeme} {self.right})"
+
 
 class Call(Expression):
     def __init__(self, callee, arguments):
@@ -68,6 +74,9 @@ class Call(Expression):
     def accept(self, visitor):
         return visitor.visit_call(self)
 
+    def __str__(self):
+        return f"{self.callee}({[str(x) for x in self.arguments]})"
+
 
 class Grouping(Expression):
     def __init__(self, expr):
@@ -76,6 +85,9 @@ class Grouping(Expression):
     def accept(self, visitor):
         return visitor.visit_grouping(self)
 
+    def __str__(self):
+        return f"({self.expr})"
+
 
 class Literal(Expression):
     def __init__(self, value):
@@ -83,6 +95,9 @@ class Literal(Expression):
 
     def accept(self, visitor):
         return visitor.visit_literal(self)
+
+    def __str__(self):
+        return f"{self.value}"
 
 
 class Logical(Expression):
@@ -94,6 +109,9 @@ class Logical(Expression):
     def accept(self, visitor):
         return visitor.visit_logical(self)
 
+    def __str__(self):
+        return f"({self.left} {self.token.lexeme} {self.right})"
+
 
 class Unary(Expression):
     def __init__(self, token, right):
@@ -103,6 +121,9 @@ class Unary(Expression):
     def accept(self, visitor):
         return visitor.visit_unary(self)
 
+    def __str__(self):
+        return f"{self.token.lexeme}({self.right})"
+
 
 class Variable(Expression):
     def __init__(self, name):
@@ -110,3 +131,6 @@ class Variable(Expression):
 
     def accept(self, visitor):
         return visitor.variable(self)
+
+    def __str__(self):
+        return f"{self.name.lexeme}"

@@ -127,13 +127,13 @@ class Parser:
     def __process_call(self, callee):
         args = []
 
-        if not self.__match(TokenType.RIGHT_PAREN):
+        if not self.__match_not_advance(TokenType.RIGHT_PAREN):
             args.append(self.__expression())
 
             while self.__match(TokenType.COMMA):
                 args.append(self.__expression())
 
-        self.__assert_match(TokenType.LEFT_PAREN, "Expect ')' after function arguments")
+        self.__assert_match(TokenType.RIGHT_PAREN, "Expect ')' after function arguments")
 
         return Call(callee=callee, arguments=args)
 
@@ -161,7 +161,7 @@ class Parser:
 
             return Grouping(expr)
 
-        raise ParserException(f"Expected expression on line {self.__current.line}")
+        raise ParserException("Unexpected expression")
 
     @property
     def __current(self):
@@ -189,6 +189,15 @@ class Parser:
             return False
 
         self.__advance()
+        return True
+
+    def __match_not_advance(self, token_type):
+        if self.__is_at_end:
+            return False
+
+        if self.__current.token_type != token_type:
+            return False
+
         return True
 
     def __match_many(self, *token_type):
