@@ -20,7 +20,6 @@ KEYWORDS_MAPPING = {
     "fn": TokenType.FN,
     "return": TokenType.RETURN,
     "while": TokenType.WHILE,
-    "for": TokenType.FOR,
     "print": TokenType.PRINT,
 }
 
