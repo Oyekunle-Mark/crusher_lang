@@ -2,6 +2,8 @@ import sys
 
 from lexer.scanner import CrusherException
 from lexer.scanner import Scanner
+from ast_generator.parser import Parser
+from ast_generator.parser import ParserException
 
 
 class Interpreter:
@@ -20,6 +22,9 @@ class Interpreter:
                 self.__run_file(self.args[1])
             except CrusherException as e:
                 print("Error: " + str(e))
+                sys.exit(1)
+            except ParserException as e:
+                print("Parser Error: " + str(e))
                 sys.exit(1)
         else:
             print("Error!!!")
@@ -45,6 +50,8 @@ class Interpreter:
                 self.__execute(tokens)
             except CrusherException as e:
                 print("Error: " + str(e))
+            except ParserException as e:
+                print("Parser Error: " + str(e))
 
     def __run_file(self, file_name):
         """Run a crusher source file"""
@@ -55,8 +62,11 @@ class Interpreter:
         self.__execute(tokens)
 
     def __execute(self, tokens):
-        for token in tokens:
-            print(token)
+        parser = Parser(tokens=tokens)
+        expressions = parser.parse()
+
+        for expression in expressions:
+            print(expression)
 
 
 if __name__ == "__main__":
