@@ -133,7 +133,9 @@ class Parser:
             while self.__match(TokenType.COMMA):
                 args.append(self.__expression())
 
-        self.__assert_match(TokenType.RIGHT_PAREN, "Expect ')' after function arguments")
+        self.__assert_match(
+            TokenType.RIGHT_PAREN, "Expect ')' after function arguments"
+        )
 
         return Call(callee=callee, arguments=args)
 
