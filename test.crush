@@ -3,9 +3,10 @@
 }
 "Whatever ends this string"
 
-fn(a, b, c) {
+fn some_func(a, b, c) {
     let x = 1;
     let y = c;
+    z= false or true
 
     return x * y + b and !a;
 }

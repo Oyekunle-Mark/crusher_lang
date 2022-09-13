@@ -4,51 +4,61 @@ from lexer.scanner import CrusherException
 from lexer.scanner import Scanner
 
 
-def execute(tokens):
-    for token in tokens:
-        print(token)
+class Interpreter:
+    """The Crusher Interpreter"""
 
+    def __init__(self, arguments):
+        self.args = arguments
 
-def run_file(file_name):
-    """Run a crusher source file"""
+    def run(self):
+        """Run the interpreter"""
 
-    scanner = Scanner(file_name=file_name)
-    tokens = scanner.scan()
+        if len(self.args) == 1:
+            self.__run_repl()
+        elif len(self.args) == 2:
+            try:
+                self.__run_file(self.args[1])
+            except CrusherException as e:
+                print("Error: " + str(e))
+                sys.exit(1)
+        else:
+            print("Error!!!")
+            print("Usage: python crusher.py [some_file.crush]")
+            sys.exit(1)
 
-    execute(tokens)
+    def __run_repl(self):
+        """Starts the crusher REPL"""
 
+        print("\nWelcome to Crusher Lang. \nVersion 0.0.1 - Written by Oye Oloyede\n")
 
-def run_repl():
-    """Starts the crusher REPL"""
+        while True:
+            user_input = input("> ")
 
-    print("\nWelcome to Crusher Lang. \nVersion 0.0.1 - Written by Oye Oloyede\n")
+            if user_input == "exit":
+                print("\nQuitting... \nGoodbye. Thank you for using Crusher Lang")
+                sys.exit(0)
 
-    while True:
-        user_input = input("> ")
+            try:
+                scanner = Scanner(raw_text=user_input)
+                tokens = scanner.scan()
 
-        if user_input == "exit":
-            print("\nQuitting... \nGoodbye. Thank you for using Crusher Lang")
-            sys.exit(0)
+                self.__execute(tokens)
+            except CrusherException as e:
+                print("Error: " + str(e))
 
-        try:
-            scanner = Scanner(raw_text=user_input)
-            tokens = scanner.scan()
+    def __run_file(self, file_name):
+        """Run a crusher source file"""
 
-            execute(tokens)
-        except CrusherException as e:
-            print("Error: " + str(e))
+        scanner = Scanner(file_name=file_name)
+        tokens = scanner.scan()
+
+        self.__execute(tokens)
+
+    def __execute(self, tokens):
+        for token in tokens:
+            print(token)
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == 1:
-        run_repl()
-    elif len(sys.argv) == 2:
-        try:
-            run_file(sys.argv[1])
-        except CrusherException as e:
-            print("Error: " + str(e))
-            sys.exit(1)
-    else:
-        print("Error!!!")
-        print("Usage: python crusher.py [some_file.crush]")
-        sys.exit(1)
+    interpreter = Interpreter(sys.argv)
+    interpreter.run()
