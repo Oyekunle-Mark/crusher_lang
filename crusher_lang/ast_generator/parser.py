@@ -6,6 +6,14 @@ from .expression import Literal
 from .expression import Logical
 from .expression import Unary
 from .expression import Variable
+from .statement import ExpressionStatement
+from .statement import BlockStatement
+from .statement import FunctionStatement
+from .statement import IfStatement
+from .statement import PrintStatement
+from .statement import ReturnStatement
+from .statement import LetStatement
+from .statement import WhileStatement
 from lexer.token_type import TokenType
 
 
@@ -18,14 +26,130 @@ class ParserException(Exception):
 class Parser:
     def __init__(self, tokens):
         self.tokens = tokens
-        self.expressions = []
+        self.statements = []
         self.current = 0
 
     def parse(self):
         while not self.__is_at_end:
-            self.expressions.append(self.__expression())
+            self.statements.append(self.__declaration())
 
-        return self.expressions
+        return self.statements
+
+    def __declaration(self):
+        if self.__match(TokenType.FN):
+            return self.__function_declaration()
+
+        if self.__match(TokenType.LET):
+            return self.__let_declaration()
+
+        return self.__statement()
+
+    def __statement(self):
+        if self.__match(TokenType.WHILE):
+            return self.__while_statement()
+
+        if self.__match(TokenType.IF):
+            return self.__if_statement()
+
+        if self.__match(TokenType.PRINT):
+            return self.__print_statement()
+
+        if self.__match(TokenType.RETURN):
+            return self.__return_statement()
+
+        if self.__match(TokenType.LEFT_BRACE):
+            return BlockStatement(self.__block())
+
+        return self.__expression_statement()
+
+    def __let_declaration(self):
+        name = self.__assert_match(TokenType.IDENTIFIER, "Expect variable name")
+
+        initializer = None
+
+        if self.__match(TokenType.EQUAL):
+            initializer = self.__expression()
+
+        self.__assert_match(TokenType.SEMICOLON, "Expects ';' after a declaration.")
+
+        return LetStatement(name, initializer)
+
+    def __function_declaration(self):
+        name = self.__assert_match(TokenType.IDENTIFIER, "Expect function name")
+
+        self.__assert_match(TokenType.LEFT_PAREN, "Expect '(' after function name.")
+        parameters = []
+
+        if not self.__match_not_advance(TokenType.RIGHT_PAREN):
+            parameters.append(self.__expression())
+
+            while self.__match(TokenType.COMMA):
+                parameters.append(self.__expression())
+
+        self.__assert_match(
+            TokenType.RIGHT_PAREN, "Expect ')' after function parameters."
+        )
+
+        self.__assert_match(TokenType.LEFT_BRACE, "Expect '{' before function body.")
+        body = self.__block()
+
+        return FunctionStatement(name, parameters, body)
+
+    def __block(self):
+        statements = []
+
+        while (
+            not self.__match_not_advance(TokenType.RIGHT_BRACE) and not self.__is_at_end
+        ):
+            statements.add(self.__declaration())
+
+        self.__assert_match(TokenType.RIGHT_BRACE, "Expect '}' after block.")
+
+        return statements
+
+    def __print_statement(self):
+        expr = self.__expression()
+        self.__assert_match(TokenType.SEMICOLON, "Expects ';' after a value.")
+
+        return PrintStatement(expr)
+
+    def __return_statement(self):
+        expr = None
+
+        if not self.__match_not_advance(TokenType.SEMICOLON):
+            expr = self.__expression()
+
+        self.__assert_match(TokenType.SEMICOLON, "Expects ';' after a return.")
+
+        return ReturnStatement(expr)
+
+    def __if_statement(self):
+        self.__assert_match(TokenType.LEFT_PAREN, "Expect '(' after if statement.")
+        condition = self.__expression()
+        self.__assert_match(TokenType.RIGHT_PAREN, "Expect ')' after if condition.")
+
+        then_branch = self.__statement()
+        else_branch = None
+
+        if self.__match_not_advance(TokenType.ELSE):
+            else_branch = self.__statement()
+
+        return IfStatement(condition, then_branch, else_branch)
+
+    def __expression_statement(self):
+        expr = self.__expression()
+        self.__assert_match(TokenType.SEMICOLON, "Expects ';' after an expression.")
+
+        return ExpressionStatement(expr)
+
+    def __while_statement(self):
+        self.__assert_match(TokenType.LEFT_PAREN, "Expect '(' after while statement.")
+        condition = self.__expression()
+        self.__assert_match(TokenType.RIGHT_PAREN, "Expect ')' after while condition.")
+
+        body = self.__statement()
+
+        return WhileStatement(condition, body)
 
     def __expression(self):
         return self.__assignment()
@@ -211,7 +335,7 @@ class Parser:
 
     def __assert_match(self, token_type, message=None):
         if self.__match(token_type=token_type):
-            return
+            return self.tokens[self.current - 1]
 
         raise ParserException(
             message

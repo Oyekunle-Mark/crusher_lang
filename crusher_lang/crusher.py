@@ -63,10 +63,10 @@ class Interpreter:
 
     def __execute(self, tokens):
         parser = Parser(tokens=tokens)
-        expressions = parser.parse()
+        statements = parser.parse()
 
-        for expression in expressions:
-            print(expression)
+        for statement in statements:
+            print(statement)
 
 
 if __name__ == "__main__":

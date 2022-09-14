@@ -77,16 +77,16 @@ class FunctionStatement(Statement):
 
 
 class IfStatement(Statement):
-    def __init__(self, condition, if_branch, else_branch):
+    def __init__(self, condition, then_branch, else_branch):
         self.condition = condition
-        self.if_branch = if_branch
+        self.then_branch = then_branch
         self.else_branch = else_branch
 
     def accept(self, visitor):
         return visitor.visit_if(self)
 
     def __str__(self):
-        return f"if {self.condition} |{self.if_branch}| else |{self.else_branch}|"
+        return f"if {self.condition} |{self.then_branch}| else |{self.else_branch}|"
 
 
 class PrintStatement(Statement):
