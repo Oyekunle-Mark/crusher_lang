@@ -101,7 +101,7 @@ class Parser:
         while (
             not self.__match_not_advance(TokenType.RIGHT_BRACE) and not self.__is_at_end
         ):
-            statements.add(self.__declaration())
+            statements.append(self.__declaration())
 
         self.__assert_match(TokenType.RIGHT_BRACE, "Expect '}' after block.")
 
@@ -131,7 +131,7 @@ class Parser:
         then_branch = self.__statement()
         else_branch = None
 
-        if self.__match_not_advance(TokenType.ELSE):
+        if self.__match(TokenType.ELSE):
             else_branch = self.__statement()
 
         return IfStatement(condition, then_branch, else_branch)
