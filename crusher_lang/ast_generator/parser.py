@@ -311,7 +311,7 @@ class Parser:
 
     @property
     def __is_at_end(self):
-        return self.current == len(self.tokens)
+        return self.current >= len(self.tokens)
 
     def __match(self, token_type):
         if self.__is_at_end:

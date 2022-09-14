@@ -55,13 +55,11 @@ class Interpreter:
     def __run_file(self, file_name):
         """Run a crusher source file"""
 
-        with open(self.file_name) as file:
+        with open(file_name) as file:
             # Loads the source file and writes the entire file content
-            # to the raw_text property as string. Adding a ceremonial end of line
-            # char to the end
+            # to the raw_text property as string.
 
             raw_text = file.read()
-            raw_text += "\0"
 
         self.__execute(raw_text)
 
