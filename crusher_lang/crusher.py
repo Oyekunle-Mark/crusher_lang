@@ -11,6 +11,8 @@ class Interpreter:
 
     def __init__(self, arguments):
         self.args = arguments
+        self.scanner = Scanner()
+        self.parser = Parser()
 
     def run(self):
         """Run the interpreter"""
@@ -44,10 +46,7 @@ class Interpreter:
                 sys.exit(0)
 
             try:
-                scanner = Scanner(raw_text=user_input)
-                tokens = scanner.scan()
-
-                self.__execute(tokens)
+                self.__execute(user_input)
             except CrusherException as e:
                 print("Error: " + str(e))
             except ParserException as e:
@@ -56,14 +55,19 @@ class Interpreter:
     def __run_file(self, file_name):
         """Run a crusher source file"""
 
-        scanner = Scanner(file_name=file_name)
-        tokens = scanner.scan()
+        with open(self.file_name) as file:
+            # Loads the source file and writes the entire file content
+            # to the raw_text property as string. Adding a ceremonial end of line
+            # char to the end
 
-        self.__execute(tokens)
+            raw_text = file.read()
+            raw_text += "\0"
 
-    def __execute(self, tokens):
-        parser = Parser(tokens=tokens)
-        statements = parser.parse()
+        self.__execute(raw_text)
+
+    def __execute(self, raw_text):
+        tokens = self.scanner.scan(raw_text=raw_text)
+        statements = self.parser.parse(tokens=tokens)
 
         for statement in statements:
             print(statement)

@@ -24,16 +24,22 @@ class ParserException(Exception):
 
 
 class Parser:
-    def __init__(self, tokens):
-        self.tokens = tokens
-        self.statements = []
+    def __init__(self):
+        self.tokens = []
         self.current = 0
 
-    def parse(self):
-        while not self.__is_at_end:
-            self.statements.append(self.__declaration())
+    def __init_parser(self, tokens):
+        self.tokens = tokens
+        self.current = 0
 
-        return self.statements
+    def parse(self, tokens):
+        self.__init_parser(tokens)
+        statements = []
+
+        while not self.__is_at_end:
+            statements.append(self.__declaration())
+
+        return statements
 
     def __declaration(self):
         if self.__match(TokenType.FN):
