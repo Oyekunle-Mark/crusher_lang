@@ -1,11 +1,28 @@
-= + - * / {
-    , ;; < < + (()) == != !
+let x = 1;
+
+// ignore this
+
+fn me(a, b, c) {
+    let a = 4;
+    b = a;
+    c = True and False;
+
+    return d() * b * c;
 }
-"Whatever ends this string"
 
-fn(a, b, c) {
-    let x = 1;
-    let y = c;
+if (True) {
+    print _happy;
+}
 
-    return x * y + b and !a;
+if (me(1, 2, 3)) {
+    print _happy;
+} else {
+    while (a < -1) {
+        d = a * b;
+        print d;
+    }
+}
+
+{
+    "some high level block";
 }

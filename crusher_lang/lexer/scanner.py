@@ -20,7 +20,6 @@ KEYWORDS_MAPPING = {
     "fn": TokenType.FN,
     "return": TokenType.RETURN,
     "while": TokenType.WHILE,
-    "for": TokenType.FOR,
     "print": TokenType.PRINT,
 }
 
@@ -28,8 +27,15 @@ KEYWORDS_MAPPING = {
 class Scanner:
     """Scans a source file and returns the tokens"""
 
-    def __init__(self, file_name=None, raw_text=None):
-        self.file_name = file_name
+    def __init__(self):
+        self.raw_text = ""
+        self.start = 0
+        self.current = 0
+        self.line = 1
+        self.tokens = []
+        self.current_token_index = 0
+
+    def __init__scanner(self, raw_text):
         self.raw_text = raw_text
         self.start = 0
         self.current = 0
@@ -37,21 +43,11 @@ class Scanner:
         self.tokens = []
         self.current_token_index = 0
 
-    def __load_file(self):
-        """Loads the source file and writes the entire file content
-        to the raw_text property as string
-        """
-
-        with open(self.file_name) as file:
-            self.raw_text = file.read()
-            self.raw_text += "\0"
-
-    def scan(self):
+    def scan(self, raw_text):
         """Scans the source code or using the user input and returns
         a lit of tokens"""
 
-        if self.file_name is not None:
-            self.__load_file()
+        self.__init__scanner(raw_text=raw_text)
 
         while not self.__at_end_of_file:
             self.start = self.current

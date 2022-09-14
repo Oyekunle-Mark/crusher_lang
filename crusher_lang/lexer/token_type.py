@@ -43,8 +43,7 @@ class TokenType(Enum):
     FN = 29
     RETURN = 30
     WHILE = 31
-    FOR = 32
-    PRINT = 33  # technically isn't a keyword, but since I might not be adding a standard library, I'm hacking print in.
+    PRINT = 32  # technically isn't a keyword, but since I might not be adding a standard library, I'm hacking print in.
 
     # The ubiquitous, yet discreet end-of-line
-    EOF = 44
+    EOF = 33
