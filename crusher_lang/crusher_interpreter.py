@@ -14,7 +14,7 @@ class Interpreter:
         self.scanner = Scanner()
         self.parser = Parser()
 
-    def run(self):
+    def interpret(self):
         """Run the interpreter"""
 
         if len(self.args) == 1:
@@ -72,5 +72,4 @@ class Interpreter:
 
 
 if __name__ == "__main__":
-    interpreter = Interpreter(sys.argv)
-    interpreter.run()
+    Interpreter(sys.argv).interpret()
