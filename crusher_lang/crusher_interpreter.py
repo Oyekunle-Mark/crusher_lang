@@ -1,4 +1,3 @@
-from symbol import parameters
 import sys
 
 from lexer.scanner import CrusherException
@@ -236,8 +235,7 @@ class Interpreter(ExpressionVisitor, StatementVisitor):
         print(self.__stringify_to_crusher_format(value))
 
     def visit_if(self, if_stmt):
-        print(if_stmt)
-        if self.__is_truthy(if_stmt.condition):
+        if self.__is_truthy(self.__execute_statement(if_stmt.condition)):
             self.__execute_statement(if_stmt.then_branch)
         elif if_stmt.else_branch is not None:
             self.__execute_statement(if_stmt.else_branch)
