@@ -1,12 +1,11 @@
 class CrusherFunction:
-    def __init__(self, name, parameters, body):
-        self.name = name
-        self.parameters = parameters
-        self.body = body
+    def __init__(self, function_stmt, table):
+        self.function_stmt = function_stmt
+        self.table = table
 
     @property
     def arity(self):
-        return len(self.parameters)
+        return len(self.function_stmt.parameters)
 
-    def call(self, arguments):
-        pass
+    def __str__(self):
+        return f"<function {self.function_stmt.name.lexeme}>"

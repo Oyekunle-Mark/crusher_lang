@@ -1,5 +1,4 @@
-class CrusherRuntimeError(Exception):
-    pass
+from .runtime_exceptions import CrusherRuntimeError
 
 
 class SymbolTable:
@@ -19,7 +18,10 @@ class SymbolTable:
     def assign(self, token, value):
         if token.lexeme in self.values:
             self.values[token.lexeme] = value
-            return
+            return value
+
+        if self.parent is not None:
+            return self.parent.assign(token, value)
 
         raise CrusherRuntimeError(f"Undefined variable {token.lexeme}.")
 
