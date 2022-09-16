@@ -1,28 +1,50 @@
-let x = 1;
+let age = 12;
 
-// ignore this
+print age;
 
-fn me(a, b, c) {
-    let a = 4;
-    b = a;
-    c = True and False;
+fn sum(a, b, c) {
+    let age = 10;
+    print age;
 
-    return d() * b * c;
+    return a + b + c;
 }
 
-if (True) {
-    print _happy;
+let result = sum(2, 3, 5);
+print result;
+
+result = 0;
+print 0;
+
+let start = 5;
+
+while (start >= 0) {
+    print start;
+    start = start - 1;
 }
 
-if (me(1, 2, 3)) {
-    print _happy;
-} else {
-    while (a < -1) {
-        d = a * b;
-        print d;
+print start;
+
+fn factorial(num) {
+    if (num == 1) {
+        return 1;
     }
+
+    return num * factorial(num - 1);
 }
 
-{
-    "some high level block";
+age = factorial(4);
+
+if (age == 24) {
+    print "Crusher is crushing it";
+} else {
+    print "Oooh oooo. Damn bugs!!!!";
 }
+
+print true and false;
+print false or true;
+
+print null == null;
+print 1 != 2;
+
+// let's verify some runtime error
+let age = 4;

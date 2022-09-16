@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 class StatementVisitor(ABC):
     @abstractmethod
-    def visit_expression(self, assignment_stmt):
+    def visit_expression(self, expression_stmt):
         pass
 
     @abstractmethod
@@ -129,7 +129,7 @@ class WhileStatement(Statement):
         self.body = body
 
     def accept(self, visitor):
-        return visitor.f(self)
+        return visitor.visit_while(self)
 
     def __str__(self):
         return f"while ({self.condition}) |{self.body}|"

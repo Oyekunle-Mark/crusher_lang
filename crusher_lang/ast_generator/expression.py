@@ -130,7 +130,7 @@ class Variable(Expression):
         self.name = name
 
     def accept(self, visitor):
-        return visitor.variable(self)
+        return visitor.visit_variable(self)
 
     def __str__(self):
         return f"{self.name.lexeme}"
