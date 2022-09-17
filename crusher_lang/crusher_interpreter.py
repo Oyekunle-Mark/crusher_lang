@@ -71,6 +71,8 @@ class Interpreter(ExpressionVisitor, StatementVisitor):
     def __run_file(self, file_name):
         """Run a crusher source file"""
 
+        self.__assert_crusher_extension(file_name=file_name)
+
         with open(file_name) as file:
             # Loads the source file and writes the entire file content
             # to the raw_text property as string.
@@ -78,6 +80,10 @@ class Interpreter(ExpressionVisitor, StatementVisitor):
             raw_text = file.read()
 
         self.__execute(raw_text)
+
+    def __assert_crusher_extension(self, file_name):
+        if not file_name.endswith(".crush"):
+            raise CrusherException(f"Expect source code to end with .crush. Got a file named {file_name} instead.")
 
     def __execute(self, raw_text):
         tokens = self.scanner.scan(raw_text=raw_text)
