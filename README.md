@@ -1,6 +1,8 @@
 # crusher_lang
 
-Crusher is a lightweight, interpreted procedural programming language. It is mostly inspired by boredom and wishful thinking.
+Crusher is a lightweight, interpreted procedural programming language.
+
+Inspired in large part by boredom and wishful thinking.
 
 Written in Python, with a hand-written lexer and parser, Crusher packs enough features to satisfy my aimless vanity.
 
