@@ -103,3 +103,8 @@ Goodbye. Thank you for using Crusher Lang
 
 ### Crusher source codde
 To execute a Crusher source code, use `python crusher_lang/crusher_interpreter.py test.crush` replacing ****test.crush**** with the name of your file.
+
+## Improvements?
+- Fair to say I should spend more time on better error reporting. The `Token` struct have line and column properties. I just got too lazy to use em :(
+- Closures? Would be a neat idea.
+- `for` loops? Even though you could achieve the same thing with the existing while loop, but a little syntactic sugar wouldn't hurt anyone.
