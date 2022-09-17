@@ -13,28 +13,34 @@ let result = sum(2, 3, 5);
 print result;
 
 result = 0;
-print 0;
+print result;
 
-let start = 5;
+let start = 10;
+let inc = 0;
 
-while (start >= 0) {
-    print start;
+fn increment_sum() {
+    inc = inc + 1;
+}
+
+while (start > 0) {
+    increment_sum();
     start = start - 1;
 }
 
 print start;
+print inc;
 
-fn factorial(num) {
-    if (num == 1) {
-        return 1;
+fn fibonacci(n) {
+    if (n <= 1) {
+        return n;
     }
 
-    return num * factorial(num - 1);
+    return fibonacci(n - 1) + fibonacci(n - 2);
 }
 
-age = factorial(4);
+let thirteenth_fib = fibonacci(13);
 
-if (age == 24) {
+if (thirteenth_fib == 233) {
     print "Crusher is crushing it";
 } else {
     print "Oooh oooo. Damn bugs!!!!";
@@ -45,6 +51,3 @@ print false or true;
 
 print null == null;
 print 1 != 2;
-
-// let's verify some runtime error
-let age = 4;
