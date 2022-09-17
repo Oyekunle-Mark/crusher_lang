@@ -67,3 +67,39 @@ print 1 != 2;
 ```
 
 ## Running Crusher
+
+You can choose to run crusher as a REPL and play with around with it in your terminal.
+Or execute a Crusher source code (A file ending with `.crush` extension).
+
+To begin, clone this repo and `cd` into the project directory.
+
+Be sure that your `python` command isn't using python 2. You can check using the `python --version` command.
+If it is, there are resources on the internet with information on how to install python 3. You can replace the *python* in the commands below with *python3* or use a command alias.
+
+### Crusher REPL
+To start the Crusher REPL, use `python crusher_lang/crusher_interpreter.py`. You can exit the REPL by using the `exit` command when you're done.
+
+```bash
+$ python crusher_lang/crusher_interpreter.py
+
+Welcome to Crusher Lang.
+Version 0.0.1 - Written by Oye Oloyede
+
+> // and away we go
+> fn say_hello_n_time(n) { while(n > 0) { print "Hello!"; n = n - 1;}}
+> say_hello_n_time(5);
+"Hello!"
+"Hello!"
+"Hello!"
+"Hello!"
+"Hello!"
+>
+> exit
+
+Quitting...
+Goodbye. Thank you for using Crusher Lang
+
+```
+
+### Crusher source codde
+To execute a Crusher source code, use `python crusher_lang/crusher_interpreter.py test.crush` replacing *test.crush* with the name of your file.
