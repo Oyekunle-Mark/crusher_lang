@@ -71,6 +71,8 @@ class Interpreter(ExpressionVisitor, StatementVisitor):
     def __run_file(self, file_name):
         """Run a crusher source file"""
 
+        self.__assert_crusher_extension(file_name=file_name)
+
         with open(file_name) as file:
             # Loads the source file and writes the entire file content
             # to the raw_text property as string.
@@ -78,6 +80,12 @@ class Interpreter(ExpressionVisitor, StatementVisitor):
             raw_text = file.read()
 
         self.__execute(raw_text)
+
+    def __assert_crusher_extension(self, file_name):
+        if not file_name.endswith(".crush"):
+            raise CrusherException(
+                f"Expect source code to end with .crush. Got a file named {file_name} instead."
+            )
 
     def __execute(self, raw_text):
         tokens = self.scanner.scan(raw_text=raw_text)
@@ -150,6 +158,8 @@ class Interpreter(ExpressionVisitor, StatementVisitor):
             return ret.value
 
     def __convert_arguments_and_parameters_to_declarations(self, parameters, arguments):
+        """Adds the function's parameters as declarations to the top of the body"""
+
         declarations = []
 
         for parameter, argument in zip(parameters, arguments):
@@ -241,6 +251,7 @@ class Interpreter(ExpressionVisitor, StatementVisitor):
             self.__execute_statement(if_stmt.else_branch)
 
     def visit_function(self, function_stmt):
+        # create a CrusherFunction instance with the function statement and current symbol table.
         crusher_function = CrusherFunction(function_stmt, self.table)
         self.table.define(function_stmt.name, crusher_function)
 
@@ -251,14 +262,16 @@ class Interpreter(ExpressionVisitor, StatementVisitor):
         return self.__execute_statement(expression_stmt.expr)
 
     def __execute_block(self, statements, table):
-        previous = self.table
-        self.table = table
+        previous = self.table  # store existing symbol table
+        self.table = (
+            table  # overwrite the interpreters symbol table with the table argument
+        )
 
         try:
             for statement in statements:
                 self.__execute_statement(statement)
         finally:
-            self.table = previous
+            self.table = previous  # and never forget to set the interpreters symbol table back to what it was
 
     def __stringify_to_crusher_format(self, value):
         if value is None:

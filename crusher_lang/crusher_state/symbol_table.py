@@ -2,6 +2,10 @@ from .runtime_exceptions import CrusherRuntimeError
 
 
 class SymbolTable:
+    """SymbolTable holds all the declarations in a block.
+    Has a property `self.parent` which points to the symbol table of the current block.
+    """
+
     def __init__(self, parent=None):
         self.parent = parent
         self.values = {}
