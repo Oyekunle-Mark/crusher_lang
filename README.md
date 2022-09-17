@@ -8,7 +8,7 @@ Written in Python, with a hand-written lexer and parser, Crusher packs enough fe
 
 ## What does Crusher look like?
 
-Below is what Crusher code looks like. This snippet doesn't achieve anything in particular. It's purpose is to show you some of Crusher's feature and how writing procedures in Crusher (like the `fibonacci` below) is quite similar to most C-like programming language
+Below is what Crusher code looks like. This snippet doesn't achieve anything in particular. It's purpose is to show you some of Crusher's feature and how writing procedures in Crusher (like the `fibonacci` function below) is quite similar to most C-like programming language
 
 ```rust
 let age = 12;
@@ -74,7 +74,7 @@ Or execute a Crusher source code (A file ending with `.crush` extension).
 To begin, clone this repo and `cd` into the project directory.
 
 Be sure that your `python` command isn't using python 2. You can check using the `python --version` command.
-If it is, there are resources on the internet with information on how to install python 3. You can replace the *python* in the commands below with *python3* or use a command alias.
+If it is, there are resources on the internet with information on how to install python 3. You can replace the **python** in the commands below with **python3** or use a command alias.
 
 ### Crusher REPL
 To start the Crusher REPL, use `python crusher_lang/crusher_interpreter.py`. You can exit the REPL by using the `exit` command when you're done.
@@ -102,4 +102,4 @@ Goodbye. Thank you for using Crusher Lang
 ```
 
 ### Crusher source codde
-To execute a Crusher source code, use `python crusher_lang/crusher_interpreter.py test.crush` replacing *test.crush* with the name of your file.
+To execute a Crusher source code, use `python crusher_lang/crusher_interpreter.py test.crush` replacing ****test.crush**** with the name of your file.
